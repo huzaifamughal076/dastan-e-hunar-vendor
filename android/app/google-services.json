@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "928257451692",
+    "project_id": "daastan-e-hunar",
+    "storage_bucket": "daastan-e-hunar.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:928257451692:android:f1e40fad217916357b2109",
+        "android_client_info": {
+          "package_name": "com.example.dashtanehunar"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAbp1mwvjTEwu6YJjMQoEZP_egb1eJh2vk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
