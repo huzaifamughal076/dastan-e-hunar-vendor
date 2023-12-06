@@ -18,7 +18,16 @@ class ProductDetailPage extends StatelessWidget {
       ),
       bottomNavigationBar: Padding(
         padding: const EdgeInsets.all(20),
-        child: CustomButton(text: "Edit Product", function: () {}),
+        child: CustomButton(text: "Edit Product", function: () {
+          context.read<EditProductCubit>().onChangeSelectedCategory(product['productCategory']);
+          Navigator.push(context, MaterialPageRoute(builder: (context) => EditProductPage(finalMap: product),));
+
+          // Navigator.pushNamed(
+          //   context, 
+          //   AppRoutes.editProduct, 
+          //   );
+
+        }),
       ),
       body: Column(
         children: [
@@ -60,6 +69,47 @@ class ProductDetailPage extends StatelessWidget {
                       CustomText(text: "Rs. ${product["productPrice"]}")
                     ],
                   ),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                   Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                       const CustomText(
+                    text: "Status",
+                  ),
+
+                   CustomText(
+                    text: "${product['productStatus']}",
+                    color: (product['productStatus'].toLowerCase()=="pending")
+                                          ?kOrange
+                                          :(product['productStatus'].toLowerCase()=="rejected")
+                                          ?kRed
+                                          :(product['productStatus'].toLowerCase()=="active")
+                                          ?kGreen
+                                          :kBlack,
+
+                  ),
+
+                    ],),
+                  const SizedBox(
+                    height: 10,
+                  ),
+
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                       const CustomText(
+                    text: "Category",
+                  ),
+
+                   CustomText(
+                    text: "${product['productCategory']??"Not Provided"}",
+
+                  ),
+
+                    ],),
+
                   const SizedBox(
                     height: 10,
                   ),

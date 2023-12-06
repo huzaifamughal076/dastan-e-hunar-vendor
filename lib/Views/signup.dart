@@ -16,6 +16,8 @@ class _SignUpPageState extends State<SignUpPage> {
   final TextEditingController firstName = TextEditingController();
   final TextEditingController lastName = TextEditingController();
   final TextEditingController shopName = TextEditingController();
+  final TextEditingController shopLocation = TextEditingController();
+  TextEditingController? shopType = TextEditingController();
   final TextEditingController shopDescription = TextEditingController();
   final TextEditingController bankName = TextEditingController();
   final TextEditingController accountNumber = TextEditingController();
@@ -61,7 +63,7 @@ class _SignUpPageState extends State<SignUpPage> {
           return Padding(
             padding: const EdgeInsets.all(20),
             child: CustomButton(
-                text: "Create",
+                text: "Next",
                 function: () {
                   if (_formKey.currentState?.validate() ?? false) {
                     context.read<SignUpCubit>().signUpUser(
@@ -71,6 +73,8 @@ class _SignUpPageState extends State<SignUpPage> {
                         firstName.text,
                         lastName.text,
                         shopName.text,
+                        shopType?.text??"",
+                        shopLocation.text,
                         shopDescription.text,
                         bankName.text,
                         accountNumber.text);
@@ -165,6 +169,51 @@ class _SignUpPageState extends State<SignUpPage> {
                   height: 10,
                 ),
                 LoginPageState().infoFields(
+                  "Shop Location",
+                  "Ex. Lahore",
+                  controller: shopLocation,
+                  validator: (value) {
+                    if (value == null || value == "") {
+                      return "Field is mandatory";
+                    }
+                    return null;
+                  },
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                const Align(
+                  alignment: Alignment.centerLeft,
+                  child: CustomText(text: 'What do you sell')),
+                const SizedBox(
+                  height: 10,
+                ),
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(12),
+                  child: DropdownMenu(
+                    errorText: (shopType?.text.trim().isEmpty??true)?"Field required":null,
+                    width: MediaQuery.of(context).size.width * 0.9,
+                    hintText: 'Select what you are selling',
+                    dropdownMenuEntries: dropdownList,
+                    controller: shopType,
+                    inputDecorationTheme: const InputDecorationTheme(
+                      fillColor: kWhite,
+                      filled: true,
+                      border: InputBorder.none, // Remove the border
+                    ),
+                    menuStyle: MenuStyle(
+                      backgroundColor: const MaterialStatePropertyAll(kWhite),
+                      shape: MaterialStatePropertyAll(RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
+                        side: const BorderSide(color: kTransparent, width: 0),
+                      )),
+                    ),
+                  ),
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                LoginPageState().infoFields(
                   "Shop description",
                   "Highlights of the store",
                   contentPadding: const EdgeInsets.symmetric(
@@ -218,6 +267,22 @@ class _SignUpPageState extends State<SignUpPage> {
         ),
       ),
     );
+  }
+
+  List<DropdownMenuEntry<String>> get dropdownList {
+    return [
+      const DropdownMenuEntry(
+          value: "Home Decoration", label: 'Home Decoration'),
+      const DropdownMenuEntry(
+          value: "Fashion and Accessories", label: 'Fashion and Accessories'),
+      const DropdownMenuEntry(
+          value: "Textile and Fiber Arts", label: 'Textile and Fiber Arts'),
+      const DropdownMenuEntry(
+          value: "Woodwork and stone work", label: 'Woodwork and stone work'),
+      const DropdownMenuEntry(
+          value: "Candles and Soaps", label: 'Candles and Soaps'),
+      const DropdownMenuEntry(value: "Jewelry", label: 'Jewelry'),
+    ];
   }
 
   Widget sellerType() {

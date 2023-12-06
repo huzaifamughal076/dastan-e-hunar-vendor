@@ -27,6 +27,8 @@ export 'package:flutter/services.dart';
 export 'package:flutter_bloc/flutter_bloc.dart';
 export 'package:lottie/lottie.dart';
 export 'package:permission_handler/permission_handler.dart';
+export 'package:dashtanehunar/Blocs/Edit Product/cubit/edit_product_cubit.dart';
+export 'package:video_player/video_player.dart';
 
 // export 'package:dashtanehunar/Routes/routes.dart';
 // export 'package:lottie/lottie.dart';

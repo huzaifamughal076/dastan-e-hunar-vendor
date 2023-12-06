@@ -8,6 +8,7 @@ class SnackBarService {
       required String message,
       required ContentType contentType}) {
     final snackBar = SnackBar(
+      duration: const Duration(milliseconds: 1800),
       elevation: 0,
       behavior: SnackBarBehavior.floating,
       backgroundColor: Colors.transparent,

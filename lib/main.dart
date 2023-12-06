@@ -1,7 +1,17 @@
 
 
 
+import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter/foundation.dart';
+
 import 'Utils/utils.dart';
+
+Future<void> firebaseMessagingBackgroundHandler(RemoteMessage message) async {
+  if (kDebugMode) {
+    print("Handling a background message: ${message.notification?.title}");
+    print("Handling a background message: ${message.notification?.body}");
+  }
+}
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -39,6 +49,7 @@ class MyApp extends StatelessWidget {
     return MultiBlocProvider(
       providers: [...AppPages.allBlocProviders(context)],
       child: MaterialApp(
+        debugShowCheckedModeBanner: false,
         title: 'Flutter Demo',
         theme: ThemeData(
           colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),

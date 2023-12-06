@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 
 class Authentication {
   static Future<String?> signUp(
@@ -8,6 +9,8 @@ class Authentication {
     String firstName,
     String lastName,
     String shopName,
+    String shopType,
+    String shopLocation,
     String shopDescription,
     String bankName,
     String accountNumber,
@@ -18,6 +21,7 @@ class Authentication {
         email: email,
         password: password,
       );
+      String? token = await FirebaseMessaging.instance.getToken();
 
       // Create a user document in Firestore
       await FirebaseFirestore.instance
@@ -26,12 +30,19 @@ class Authentication {
           .set({
         'firstName': firstName,
         'email': email,
+        'profileUrl':'',
         'uid': userCredential.user!.uid,
         'lastName': lastName,
         'shopName': shopName,
+        'shopType': shopType,
+        'shopLocation': shopLocation,
         'shopDescription': shopDescription,
         'bankName': bankName,
         'accountNumber': accountNumber,
+        'role':'vendor',
+        'invoiceUrl':'',
+        'accountStatus':'unActive',
+        'token':'$token'
       });
       await FirebaseFirestore.instance
           .collection('shops')
