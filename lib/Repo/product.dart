@@ -2,7 +2,6 @@ import 'dart:collection';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dashtanehunar/Blocs/Dashboard%20Cubit/cubit/dashboard_cubit.dart';
-import 'package:dashtanehunar/Blocs/Get%20product/get_product_cubit.dart';
 import 'package:dashtanehunar/models/Order%20Model/order_model.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:path/path.dart';
@@ -128,7 +127,6 @@ static Future<void> getAllOrders(BuildContext context, String? uid) async {
       .get();
 
   await Future.wait(outerSnapshot.docs.map((i) async {
-    print(i.id);
     var innerSnapshot = await FirebaseFirestore.instance
         .collection('orders')
         .doc(i.id)
@@ -138,7 +136,6 @@ static Future<void> getAllOrders(BuildContext context, String? uid) async {
     List<OrderModel> orderList = [];
     
     for (var j in innerSnapshot.docs) {
-      print(j.data()['ProductId']);
       orderList.add(OrderModel.fromJson(j.data()));
       list.add(OrderModel.fromJson(j.data()));
     }
@@ -151,8 +148,6 @@ static Future<void> getAllOrders(BuildContext context, String? uid) async {
 
         context.read<DashboardCubit>().onChangeTopSellingProduct(topSellingProductInfo);
         context.read<DashboardCubit>().onChangeTotalSale(totalSale);
-  print(topSellingProductInfo?.productId);
-  print(topSellingProductInfo?.quantity);
     });
   });
 }
@@ -170,7 +165,6 @@ double calculateTotalSale(List<GroupOrderModel>? groupOrderList) {
 
 
  static OrderModel? findTopSellingProduct(List<OrderModel>? orderList) {
-  print(orderList?.length);
     if (orderList == null || orderList.isEmpty) {
       return null;
     }
@@ -196,12 +190,10 @@ double calculateTotalSale(List<GroupOrderModel>? groupOrderList) {
         topSellingProduct = productId;
       }
     });
-    print("Top selling product: $topSellingProduct (Quantity: $maxQuantity)");
 
    int? index = orderList.indexWhere((element) => element.productId==topSellingProduct);
 
 
-            print(index);
             OrderModel? model;
             if(index!=-1){
               model = orderList[index];

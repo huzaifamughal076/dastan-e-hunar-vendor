@@ -2,7 +2,7 @@ import 'package:dashtanehunar/Blocs/Dashboard%20Cubit/cubit/dashboard_cubit.dart
 
 import '../Blocs/Get product/get_product_cubit.dart';
 import '../Utils/utils.dart';
-import 'package:intl/intl.dart';
+import 'package:intl/intl.dart' as math;
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -73,7 +73,7 @@ class HomePage extends StatelessWidget {
                         width: double.maxFinite,
                         alignment: Alignment.center,
                         child: (state.totalSale!=null && state.totalSale!=0.0)
-                        ?CustomText(text: NumberFormat.compactCurrency(symbol: "PKR\n", locale: 'en_US').format(state.totalSale),fontsize: 22, fontWeight: FontWeight.bold,)
+                        ?CustomText(text: math.NumberFormat.compactCurrency(symbol: "PKR\n", locale: 'en_US').format(state.totalSale),fontsize: 22, fontWeight: FontWeight.bold,)
                         :const CustomText(text: 'No sale found'),
                       ),
                     ],

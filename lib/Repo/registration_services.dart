@@ -10,7 +10,6 @@ class RegistrationServices {
        
     try {
       await uploadImages(userId??"", image).then((value)async{
-        print(userId??"");
  await FirebaseFirestore.instance
           .collection('users')
           .doc(userId??"")
@@ -19,7 +18,6 @@ class RegistrationServices {
 
       return true;
     } catch (e) {
-      print("ICCC");
       debugPrint(e.toString());
       
       return false;

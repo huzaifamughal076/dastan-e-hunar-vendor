@@ -41,9 +41,9 @@ try{
 
 
 }on FirebaseException catch(e){
+  debugPrint(e.message);
 
 
-print(e.message);
   // SnackBarService.showSnackBar(context, 
   // title: 'We are Sorry', message: "${e.message}", contentType: ContentType.failure);
 

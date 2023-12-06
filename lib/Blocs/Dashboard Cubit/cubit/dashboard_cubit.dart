@@ -11,7 +11,6 @@ class DashboardCubit extends Cubit<DashboardState> {
 
 
 onChangeOrderList(List<GroupOrderModel>? list)async{ 
-  print(list?.length);
   emit(state.copyWith(orderList: list));
 }
 

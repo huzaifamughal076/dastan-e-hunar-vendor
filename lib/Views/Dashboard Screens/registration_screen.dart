@@ -126,7 +126,6 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                            await ImagePicker().pickImage(source: ImageSource.gallery).then((value){
                                  setState(() {
                             invoiceImage = File(value?.path??"");
-                            print(invoiceImage?.path);
                           });
                                  return null;
                               });
