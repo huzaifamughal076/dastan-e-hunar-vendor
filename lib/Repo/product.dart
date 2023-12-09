@@ -147,7 +147,7 @@ static Future<void> getAllOrders(BuildContext context, String? uid) async {
         OrderModel? topSellingProductInfo =  ProductService.findTopSellingProduct(list, context.read<DashboardCubit>().state.selectedYear??DateTime.now().year);
         double? totalSale = ProductService().calculateTotalSale(groupordersList, context.read<DashboardCubit>().state.selectedYear??DateTime.now().year);
 
-        context.read<DashboardCubit>().onChangeTopSellingProduct(null);
+        context.read<DashboardCubit>().onChangeTopSellingProduct(topSellingProductInfo);
         context.read<DashboardCubit>().onChangeTotalSale(totalSale);
     });
   });
@@ -212,7 +212,6 @@ double calculateTotalSale(List<GroupOrderModel>? groupOrderList, int year) {
     model = currentYearOrders[index];
     model.quantity = maxQuantity;
   }
-  print(model?.orderId);
   return model;
 }
 
