@@ -8,7 +8,8 @@ class StorageService {
   }
 
   Future<bool> setAuthenticationModelString(String value) async {
-    return await _prefs.setString("authenticationModel", value);
+    final pref = await SharedPreferences.getInstance();
+    return await pref.setString("authenticationModel", value);
   }
 
   Future<bool> setIsNewDeviceString(String value) async {

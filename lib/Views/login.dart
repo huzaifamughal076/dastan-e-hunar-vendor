@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:dashtanehunar/Blocs/Get%20product/get_product_cubit.dart';
 import 'package:dashtanehunar/Widgets/custom_list_of_productType.dart';
@@ -81,7 +83,7 @@ class LoginPageState extends State<LoginPage> {
                         height: 20,
                       ),
                       BlocConsumer<LoginCubit, LoginState>(
-                        listener: (context, state) {
+                        listener: (context, state) async {
                           if (state.requestStatus == RequestStatus.failure) {
                             SnackBarService.showSnackBar(context,
                                 title: "Invalid Credientials",
@@ -105,12 +107,16 @@ class LoginPageState extends State<LoginPage> {
                                 message:
                                     "World is under you knees when you are powerful",
                                 contentType: ContentType.success);
+                                
                             context
                                 .read<GetProductCubit>()
                                 .getProducts(state.userData?["uid"]);
-                                List<String> list = displayCategories(context);
+                                
+                               await StorageService().setAuthenticationModelString(jsonEncode(state.userData)).then((value){
+                                    List<String> list = displayCategories(context);
                                 categoriesList = list;
                                Navigator.pushNamed(context, AppRoutes.dashboardScreen);
+                                });
                             
                             }
                           }

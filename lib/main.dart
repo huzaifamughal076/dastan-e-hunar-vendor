@@ -15,13 +15,14 @@ Future<void> firebaseMessagingBackgroundHandler(RemoteMessage message) async {
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+   await Global.init();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
 );
   await SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
   ]);
-  await Global.init();
+ 
   if (Platform.isAndroid || Platform.isIOS) {
     await Permission.storage.status.then(
       (status) async {

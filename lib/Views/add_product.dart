@@ -14,6 +14,17 @@ class AddProductPage extends StatefulWidget {
 }
 
 class _AddProductPageState extends State<AddProductPage> {
+ 
+ @override
+  void initState() {
+    super.initState();
+     List<String> list = displayCategories(context);
+    setState(() {
+       categoriesList = list;
+    });
+
+  }
+ 
   final TextEditingController productName = TextEditingController();
   final TextEditingController productDescription =
       TextEditingController(text: ' ');
@@ -188,7 +199,7 @@ class _AddProductPageState extends State<AddProductPage> {
                         Icons.keyboard_arrow_up,
                         color: primaryColor,
                       ),
-                      dropdownMenuEntries: dropdownItems,
+                      dropdownMenuEntries: displaySelectedCategories(context),
                       onSelected: (String? value) {
                         context
                             .read<AddProductCubit>()
@@ -413,4 +424,13 @@ class _AddProductPageState extends State<AddProductPage> {
       ),
     );
   }
+
+displaySelectedCategories(BuildContext context){
+  return dropdownItems = displayCategories(context).map((category) => DropdownMenuEntry<String>(
+          value: category,
+          label: category,
+        ))
+    .toList();
+
+}
 }

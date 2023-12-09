@@ -123,7 +123,7 @@ static Future<void> getAllOrders(BuildContext context, String? uid) async {
 
   var outerSnapshot = await FirebaseFirestore.instance
       .collection('orders')
-      .where('vendor_id', isEqualTo: uid)
+      .where('vendorId', isEqualTo: uid)
       .get();
 
   await Future.wait(outerSnapshot.docs.map((i) async {
@@ -140,68 +140,81 @@ static Future<void> getAllOrders(BuildContext context, String? uid) async {
       list.add(OrderModel.fromJson(j.data()));
     }
 
-    groupordersList.add(GroupOrderModel.fromMap(i.id, i.data()['orderStatus'] ?? "Not Provided", orderList));
+    groupordersList.add(GroupOrderModel.fromMap(i.id, i.data()['orderStatus'] ?? "Not Provided", orderList, i.data()['orderPlaceOn']));
   })).then((value) {
+    context.read<DashboardCubit>().onChangeOrders(list);
     context.read<DashboardCubit>().onChangeOrderList(groupordersList).then((value){
-        OrderModel? topSellingProductInfo =  ProductService.findTopSellingProduct(list);
-        double? totalSale = ProductService().calculateTotalSale(groupordersList);
+        OrderModel? topSellingProductInfo =  ProductService.findTopSellingProduct(list, context.read<DashboardCubit>().state.selectedYear??DateTime.now().year);
+        double? totalSale = ProductService().calculateTotalSale(groupordersList, context.read<DashboardCubit>().state.selectedYear??DateTime.now().year);
 
-        context.read<DashboardCubit>().onChangeTopSellingProduct(topSellingProductInfo);
+        context.read<DashboardCubit>().onChangeTopSellingProduct(null);
         context.read<DashboardCubit>().onChangeTotalSale(totalSale);
     });
   });
 }
 
 
-double calculateTotalSale(List<GroupOrderModel>? groupOrderList) {
+double calculateTotalSale(List<GroupOrderModel>? groupOrderList, int year) {
   if (groupOrderList == null || groupOrderList.isEmpty) {
     return 0.0;
   }
 
   return groupOrderList.fold(0.0, (total, groupOrder) {
-    return total + calculateTotalPrice(groupOrder.orderList);
+    return total + calculateTotalPrice(groupOrder.orderList, year);
   });
 }
 
 
- static OrderModel? findTopSellingProduct(List<OrderModel>? orderList) {
-    if (orderList == null || orderList.isEmpty) {
-      return null;
-    }
-
-    HashMap<String, int> productQuantities = HashMap();
-
-    for (var order in orderList) {
-      String productId = order.productId ?? "";
-      int quantity = order.quantity ?? 0;
-
-      if (productQuantities.containsKey(productId)) {
-        productQuantities[productId] = productQuantities[productId]! + quantity;
-      } else {
-        productQuantities[productId] = quantity;
-      }
-    }
-    String topSellingProduct = "";
-    int maxQuantity = 0;
-
-    productQuantities.forEach((productId, quantity) {
-      if (quantity > maxQuantity) {
-        maxQuantity = quantity;
-        topSellingProduct = productId;
-      }
-    });
-
-   int? index = orderList.indexWhere((element) => element.productId==topSellingProduct);
-
-
-            OrderModel? model;
-            if(index!=-1){
-              model = orderList[index];
-               model.quantity = maxQuantity;
-            }
-
-    return model;
+ static OrderModel? findTopSellingProduct(List<OrderModel>? orderList, int year) {
+  if (orderList == null || orderList.isEmpty) {
+    return null;
   }
+
+
+  // Filter orders for the current year
+  List<OrderModel> currentYearOrders = orderList
+      .where((order) => DateTime.fromMillisecondsSinceEpoch(order.orderPlaceOn ?? 0).year == year)
+      .toList();
+
+  if (currentYearOrders.isEmpty) {
+    return null;
+  }
+
+  HashMap<String, int> productQuantities = HashMap();
+
+  for (var order in currentYearOrders) {
+    String productId = order.productId ?? "";
+    int quantity = order.quantity ?? 0;
+
+    if (productQuantities.containsKey(productId)) {
+      productQuantities[productId] = productQuantities[productId]! + quantity;
+    } else {
+      productQuantities[productId] = quantity;
+    }
+  }
+
+
+  String topSellingProduct = "";
+  int maxQuantity = 0;
+
+  productQuantities.forEach((productId, quantity) {
+    if (quantity > maxQuantity) {
+      maxQuantity = quantity;
+      topSellingProduct = productId;
+    }
+  });
+
+
+  int? index = currentYearOrders.indexWhere((element) => element.productId == topSellingProduct);
+
+  OrderModel? model;
+  if (index != -1) {
+    model = currentYearOrders[index];
+    model.quantity = maxQuantity;
+  }
+  print(model?.orderId);
+  return model;
+}
 
 
  }

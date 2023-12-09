@@ -6,7 +6,7 @@ import 'package:dashtanehunar/models/feeds_model.dart';
 class FeedServices {
 
   static Future<void> getFeeds(BuildContext context) async {
-    FirebaseFirestore.instance.collection('feeds').snapshots().listen((event) {
+    FirebaseFirestore.instance.collection('feeds').orderBy('feedPlacedOn', descending: true).snapshots().listen((event) {
       List<FeedModel>? feedsList = [];
 
       for (var element in event.docs) {

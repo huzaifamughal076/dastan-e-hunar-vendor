@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:dashtanehunar/Blocs/Add%20Product/add_product_cubit.dart';
 import 'package:dashtanehunar/Blocs/Chat%20Cubit/cubit/chat_cubit.dart';
 import 'package:dashtanehunar/Blocs/Dashboard%20Cubit/cubit/dashboard_cubit.dart';
@@ -128,7 +130,10 @@ class AppPages {
         if (jsonAuthModel != null && result.first.route == AppRoutes.login) {
           return MaterialPageRoute(
               builder: (context) {
-                return const LoginPage();
+                context.read<GetProductCubit>().getProducts(jsonDecode(jsonAuthModel)?["uid"]);
+                  context.read<LoginCubit>().setUserData(jsonDecode(jsonAuthModel));
+                    return const DashboardScreen();
+                 
               },
               settings: settings);
         }

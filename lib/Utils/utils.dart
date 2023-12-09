@@ -19,6 +19,7 @@ export 'package:dashtanehunar/Views/views.dart';
 // export 'package:lifecoach/Views/My%20Notes/add_edit_notes.dart';
 // export 'package:lifecoach/Views/My%20Notes/notes_search_screen.dart';
 // export 'package:lifecoach/Views/views.dart';
+export 'package:shared_preferences/shared_preferences.dart';
 export 'package:dashtanehunar/Widgets/widget.dart';
 export 'package:dashtanehunar/firebase_options.dart';
 export 'package:firebase_core/firebase_core.dart';
