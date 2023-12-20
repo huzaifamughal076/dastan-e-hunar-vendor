@@ -2,9 +2,11 @@ import 'package:dashtanehunar/Blocs/Chat%20Cubit/cubit/chat_cubit.dart';
 import 'package:dashtanehunar/Blocs/Dashboard%20Cubit/cubit/dashboard_cubit.dart';
 import 'package:dashtanehunar/Blocs/Feed%20Cubit/cubit/feed_cubit.dart';
 import 'package:dashtanehunar/Blocs/Notification%20Cubit/cubit/notification_cubit.dart';
+import 'package:dashtanehunar/Blocs/Shop%20Cubit/cubit/shop_cubit.dart';
 import 'package:dashtanehunar/Notification%20Services/Firebase%20Services/firebase_service.dart';
 import 'package:dashtanehunar/Notification%20Services/Local%20Notifications/local_notification_service.dart';
 import 'package:dashtanehunar/Repo/notification_services.dart';
+import 'package:dashtanehunar/Repo/vendor_account_status.dart';
 import 'package:dashtanehunar/Utils/utils.dart';
 import 'package:dashtanehunar/Views/Dashboard%20Screens/Sub%20Screens/chat_screen.dart';
 import 'package:dashtanehunar/Views/Dashboard%20Screens/Sub%20Screens/feed_screen.dart';
@@ -23,13 +25,17 @@ class DashboardScreen extends StatelessWidget {
   ];
   @override
   Widget build(BuildContext context) {
+    VendorAccountStatusServices.getAccountStatus(context,context.read<LoginCubit>().state.userData?['uid']);
     BlocProvider.of<FeedCubit>(context).getFeeds(context);
     BlocProvider.of<ChatCubit>(context)
         .getChat(context, context.read<LoginCubit>().state.userData?['uid']);
+    BlocProvider.of<ShopCubit>(context).getVendorShop(context);
     BlocProvider.of<NotificationCubit>(context).getNotifications(
         context, context.read<LoginCubit>().state.userData?['uid']);
     BlocProvider.of<DashboardCubit>(context).getAllOrders(
         context, context.read<LoginCubit>().state.userData?['uid']);
+
+        
     LocalNotificationService.initialize(context);
     FirebaseNotificationService().handleTokenStatus(context);
     FirebaseNotificationService().handleOnTapBackground(context);
@@ -44,7 +50,9 @@ class DashboardScreen extends StatelessWidget {
             drawer: const CustomDrawer(),
             appBar: AppBar(
               backgroundColor: kWhite,
-              title: Text(
+              title: (context.watch<ShopCubit>().state.loading)
+              ?const Center(child: CircularProgressIndicator(backgroundColor: primaryColor),)
+              :Text(
                 dashboardAppbarNamer(state, context),
                 style: const TextStyle(color: kBlack),
               ),
@@ -153,7 +161,7 @@ class DashboardScreen extends StatelessWidget {
 
   String dashboardAppbarNamer(DashboardState state, BuildContext context) =>
       (state.currentScreenIndex == 0)
-          ? '${context.read<LoginCubit>().state.userData?["shopName"] ?? ""}'
+          ? context.read<ShopCubit>().state.shopModel?.shopName ?? ""
           : (state.currentScreenIndex == 1)
               ? 'Feeds'
               : (state.currentScreenIndex == 2)

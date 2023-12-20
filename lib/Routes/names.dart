@@ -15,4 +15,5 @@ class AppRoutes {
   static const aboutUs = "/aboutUs";
   static const fAQPage = "/fAQPage";
   static const chatScreen = "/chatScreen";
+  static const shopDetailScreen = "/shopDetailScreen";
 }

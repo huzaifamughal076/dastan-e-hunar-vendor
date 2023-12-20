@@ -92,7 +92,7 @@ class LoginPageState extends State<LoginPage> {
                                 contentType: ContentType.failure);
                           }
                           if (state.requestStatus == RequestStatus.success) {
-                            if(context.read<LoginCubit>().state.userData?['accountStatus']=="block"){
+                            if((context.read<LoginCubit>().state.userData?['accountStatus'].toString())?.toLowerCase()=="blocked"){
                               SnackBarService.showSnackBar(context,
                                 title: "Alert",
                                 message:

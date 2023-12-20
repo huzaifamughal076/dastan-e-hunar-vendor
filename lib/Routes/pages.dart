@@ -7,12 +7,14 @@ import 'package:dashtanehunar/Blocs/Feed%20Cubit/cubit/feed_cubit.dart';
 import 'package:dashtanehunar/Blocs/Get%20product/get_product_cubit.dart';
 import 'package:dashtanehunar/Blocs/Notification%20Cubit/cubit/notification_cubit.dart';
 import 'package:dashtanehunar/Blocs/Profile%20Cubit/cubit/profile_cubit.dart';
+import 'package:dashtanehunar/Blocs/Shop%20Cubit/cubit/shop_cubit.dart';
 import 'package:dashtanehunar/Blocs/Signup/sign_up_cubit.dart';
 import 'package:dashtanehunar/Views/Dashboard%20Screens/Sub%20Screens/Notification%20Screen/notification_screen.dart';
 import 'package:dashtanehunar/Views/Dashboard%20Screens/Sub%20Screens/Profile%20Screens/Sub%20Screens/About%20Us/about_us.dart';
 import 'package:dashtanehunar/Views/Dashboard%20Screens/Sub%20Screens/Profile%20Screens/Sub%20Screens/FAQ%20Page/faq_page.dart';
 import 'package:dashtanehunar/Views/Dashboard%20Screens/Sub%20Screens/Profile%20Screens/Sub%20Screens/My%20Profile%20Screen/my_profile.dart';
 import 'package:dashtanehunar/Views/Dashboard%20Screens/Sub%20Screens/Profile%20Screens/Sub%20Screens/Privacy%20Policy/privacy_policy.dart';
+import 'package:dashtanehunar/Views/Dashboard%20Screens/Sub%20Screens/Profile%20Screens/Sub%20Screens/Shop%20Screen/shop_screen.dart';
 import 'package:dashtanehunar/Views/Dashboard%20Screens/Sub%20Screens/Profile%20Screens/Sub%20Screens/Terms%20And%20Conditions/terms_and_conditions.dart';
 import 'package:dashtanehunar/Views/Dashboard%20Screens/Sub%20Screens/chat_screen.dart';
 import 'package:dashtanehunar/Views/Dashboard%20Screens/Sub%20Screens/feed_screen.dart';
@@ -81,6 +83,11 @@ class AppPages {
         route: AppRoutes.myProfileScreen,
         page: const MyProfileScreen(),
         bloc: BlocProvider(create: (context) => ProfileCubit(),)
+      ),  
+      PageEntity(
+        route: AppRoutes.shopDetailScreen,
+        page: const ShopDetailScreen(),
+        bloc: BlocProvider(create: (context) => ShopCubit(),)
       ),  
       PageEntity(
         route: AppRoutes.termsAndConditions,

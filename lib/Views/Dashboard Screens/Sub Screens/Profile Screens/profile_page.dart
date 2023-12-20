@@ -14,6 +14,11 @@ class ProfilePage extends StatelessWidget {
         "onTap":AppRoutes.myProfileScreen,
       },
       {
+        'image':'assets/shop.svg', 
+        'title':"My Shop",
+        'onTap': AppRoutes.shopDetailScreen,
+      },
+      {
         'image':"assets/terms.svg", 
         'title':"Terms And Conditions", 
         "onTap":AppRoutes.termsAndConditions,

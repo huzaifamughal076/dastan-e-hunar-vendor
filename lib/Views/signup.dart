@@ -77,7 +77,7 @@ class _SignUpPageState extends State<SignUpPage> {
                         shopLocation.text,
                         shopDescription.text,
                         bankName.text,
-                        accountNumber.text);
+                        accountNumber.text,);
                   }
                 }),
           );

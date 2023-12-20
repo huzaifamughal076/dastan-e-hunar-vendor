@@ -50,6 +50,9 @@ class Authentication {
           .set({
         'shopName': shopName,
         'shopDescription': shopDescription,
+        'shopProfileUrl': null, 
+        'shopType': shopType, 
+        'shopLocation': shopLocation, 
       });
 
       return null; // Return null if sign-up is successful

@@ -74,72 +74,95 @@ class FeedScreen extends StatelessWidget {
   Widget feedPostCard(FeedModel? feedModel) {
     return Container(
       margin: const EdgeInsets.symmetric(vertical: 5),
-      padding: const EdgeInsets.all(12.0),
       decoration: BoxDecoration(
-        color: kWhite,
-        borderRadius: BorderRadius.circular(4),
-        border: Border.all(color: kGrey.withOpacity(0.5),width: 1)
-      ),
+          color: kWhite,
+          borderRadius: BorderRadius.circular(12),
+          border: Border.all(color: kGrey.withOpacity(0.5), width: 1)),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          SizedBox(
-            width: double.maxFinite,
-            height: 180,
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(12),
-              child: Image.network(
-                '${feedModel?.url}',
-                fit: BoxFit.fill,
-                cacheHeight: 180,
-                cacheWidth: int.parse(double.maxFinite.round().toString()),
-                errorBuilder: (context, error, stackTrace) {
-                  return Image.asset('assets/logo.jpeg');
-                },
+          Stack(
+            children: [
+              SizedBox(
+                width: double.maxFinite,
+                height: 400,
+                child: ClipRRect(
+                  borderRadius: const BorderRadius.only(
+                      topLeft: Radius.circular(12),
+                      topRight: Radius.circular(12)),
+                  child: Image.network(
+                    '${feedModel?.url}',
+                    fit: BoxFit.fill,
+                    cacheHeight: 400,
+                    cacheWidth: int.parse(double.maxFinite.round().toString()),
+                    errorBuilder: (context, error, stackTrace) {
+                      return Image.asset('assets/logo.jpeg');
+                    },
+                  ),
+                ),
               ),
+              Positioned(
+                top: 10,
+                left: 10,
+                child: Container(
+                  padding: const EdgeInsets.all(20),
+                  decoration: const BoxDecoration(
+                    shape: BoxShape.circle,
+                    image: DecorationImage(
+                        image: AssetImage('assets/logo.jpeg'),
+                        fit: BoxFit.cover),
+                  ),
+                ),
+              ),
+            ],
+          ),
+          Padding(
+            padding: const EdgeInsets.all(10),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const SizedBox(
+                  height: 10,
+                ),
+                CustomText(
+                  text: feedModel?.title ?? "",
+                  fontWeight: FontWeight.bold,
+                  fontsize: 18,
+                  color: kBlack,
+                  textAlign: TextAlign.left,
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                ReadMoreText(
+                  feedModel?.description ?? "",
+                  trimLines: 2,
+                  colorClickableText: primaryColor,
+                  trimMode: TrimMode.Line,
+                  trimCollapsedText: 'Show more',
+                  trimExpandedText: 'Show less',
+                  moreStyle: const TextStyle(
+                      fontSize: 14, fontWeight: FontWeight.bold),
+                  lessStyle: const TextStyle(
+                      fontSize: 14, fontWeight: FontWeight.bold),
+                ),
+              ],
             ),
-          ),
-          const SizedBox(
-            height: 10,
-          ),
-          CustomText(
-            text: feedModel?.title ?? "",
-            fontWeight: FontWeight.bold,
-            fontsize: 18,
-            color: kBlack,
-            textAlign: TextAlign.left,
-          ),
-          const SizedBox(
-            height: 10,
-          ),
-          ReadMoreText(
-            feedModel?.description ?? "",
-            trimLines: 2,
-            colorClickableText: primaryColor,
-            trimMode: TrimMode.Line,
-            trimCollapsedText: 'Show more',
-            trimExpandedText: 'Show less',
-            moreStyle:
-                const TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
-            lessStyle:
-                const TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
           ),
         ],
       ),
-    );
-  }
+    );  }
 
   Widget feedVideoCard(FeedModel? feedModel) {
     return Container(
       margin: const EdgeInsets.symmetric(vertical: 5),
       padding: const EdgeInsets.all(12.0),
       decoration: BoxDecoration(
-        color: kWhite,
-        borderRadius: BorderRadius.circular(4),
-        border: Border.all(color: kGrey.withOpacity(0.5),width: 1)
-      ),
+          color: kWhite,
+          borderRadius: BorderRadius.circular(4),
+          border: Border.all(color: kGrey.withOpacity(0.5), width: 1)),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         mainAxisSize: MainAxisSize.min,
@@ -180,6 +203,5 @@ class FeedScreen extends StatelessWidget {
           ),
         ],
       ),
-    );
-  }
+    );  }
 }
