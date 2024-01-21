@@ -35,8 +35,8 @@ class ProfilePage extends StatelessWidget {
       }, 
       {
         'image':"assets/faq.svg", 
-        'title':"FAQ", 
-        "onTap":AppRoutes.fAQPage,
+        'title':"Check List", 
+        "onTap":AppRoutes.checkListPage,
       },
       {
         'image':"assets/logout.svg", 

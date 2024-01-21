@@ -16,8 +16,8 @@ class LoginPage extends StatefulWidget {
 }
 
 class LoginPageState extends State<LoginPage> {
-  final TextEditingController email = TextEditingController(text: 'huzaifa@gmail.com');
-  final TextEditingController password = TextEditingController(text: '123456');
+  final TextEditingController email = TextEditingController();
+  final TextEditingController password = TextEditingController();
   TextEditingController? shopType = TextEditingController();
   final _formKey = GlobalKey<FormState>();
   @override

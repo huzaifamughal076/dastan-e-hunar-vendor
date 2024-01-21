@@ -9,6 +9,9 @@ class ProfileCubit extends Cubit<ProfileState> {
   onChangeLoading(bool loading) async {
     emit(state.copyWith(loading: loading));
   }
+  onChangeLanguage(bool? language) async {
+    emit(state.copyWith(isUrdu: language??false));
+  }
 
   onChangeFirstName(String? firstName) async {
     emit(state.copyWith(firstName: firstName));

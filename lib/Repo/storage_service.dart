@@ -15,6 +15,11 @@ class StorageService {
   Future<bool> setIsNewDeviceString(String value) async {
     return await _prefs.setString("device", value);
   }
+  Future<bool> setLanguage(bool value) async {
+    return await _prefs.setBool("language", value);
+  }
+
+
 
   String? getIsNewDeviceString() {
     return _prefs.getString("device");
@@ -22,6 +27,10 @@ class StorageService {
 
   String? getAuthenticationModelString() {
     return _prefs.getString("authenticationModel");
+  }  
+  
+  bool? getLanguage() {
+    return _prefs.getBool("language");
   }
 
   Future<void> removeUser() async {

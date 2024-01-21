@@ -11,6 +11,7 @@ import 'package:dashtanehunar/Blocs/Shop%20Cubit/cubit/shop_cubit.dart';
 import 'package:dashtanehunar/Blocs/Signup/sign_up_cubit.dart';
 import 'package:dashtanehunar/Views/Dashboard%20Screens/Sub%20Screens/Notification%20Screen/notification_screen.dart';
 import 'package:dashtanehunar/Views/Dashboard%20Screens/Sub%20Screens/Profile%20Screens/Sub%20Screens/About%20Us/about_us.dart';
+import 'package:dashtanehunar/Views/Dashboard%20Screens/Sub%20Screens/Profile%20Screens/Sub%20Screens/Check%20LIst/check_list.dart';
 import 'package:dashtanehunar/Views/Dashboard%20Screens/Sub%20Screens/Profile%20Screens/Sub%20Screens/FAQ%20Page/faq_page.dart';
 import 'package:dashtanehunar/Views/Dashboard%20Screens/Sub%20Screens/Profile%20Screens/Sub%20Screens/My%20Profile%20Screen/my_profile.dart';
 import 'package:dashtanehunar/Views/Dashboard%20Screens/Sub%20Screens/Profile%20Screens/Sub%20Screens/Privacy%20Policy/privacy_policy.dart';
@@ -33,7 +34,6 @@ class AppPages {
           create: (context) => LoginCubit(),
         ),
       ),
-
       PageEntity(
         route: AppRoutes.dashboardScreen,
         page: const DashboardScreen(),
@@ -53,7 +53,7 @@ class AppPages {
           bloc: BlocProvider(
             create: (context) => GetProductCubit(),
           )),
-          PageEntity(
+      PageEntity(
           route: AppRoutes.feeds,
           page: const FeedScreen(),
           bloc: BlocProvider(
@@ -65,7 +65,7 @@ class AppPages {
           bloc: BlocProvider(
             create: (context) => AddProductCubit(),
           )),
-          PageEntity(
+      PageEntity(
           route: AppRoutes.editProduct,
           page: const EditProductPage(),
           bloc: BlocProvider(
@@ -74,21 +74,27 @@ class AppPages {
       PageEntity(
         route: AppRoutes.productDetail,
         page: const ProductDetailPage(),
-      ), 
+      ),
+      PageEntity(
+        route: AppRoutes.checkListPage,
+        page: const ChecklistPage(),
+      ),
       PageEntity(
         route: AppRoutes.registrationPage,
         page: const RegistrationScreen(),
-      ), 
+      ),
       PageEntity(
-        route: AppRoutes.myProfileScreen,
-        page: const MyProfileScreen(),
-        bloc: BlocProvider(create: (context) => ProfileCubit(),)
-      ),  
+          route: AppRoutes.myProfileScreen,
+          page: const MyProfileScreen(),
+          bloc: BlocProvider(
+            create: (context) => ProfileCubit(),
+          )),
       PageEntity(
-        route: AppRoutes.shopDetailScreen,
-        page: const ShopDetailScreen(),
-        bloc: BlocProvider(create: (context) => ShopCubit(),)
-      ),  
+          route: AppRoutes.shopDetailScreen,
+          page: const ShopDetailScreen(),
+          bloc: BlocProvider(
+            create: (context) => ShopCubit(),
+          )),
       PageEntity(
         route: AppRoutes.termsAndConditions,
         page: const TermsAndConditions(),
@@ -98,10 +104,11 @@ class AppPages {
         page: const PrivacyPolicy(),
       ),
       PageEntity(
-        route: AppRoutes.notificationsScreen,
-        page: const NotificationsScreen(),
-        bloc: BlocProvider(create: (context) => NotificationCubit(),)
-      ),
+          route: AppRoutes.notificationsScreen,
+          page: const NotificationsScreen(),
+          bloc: BlocProvider(
+            create: (context) => NotificationCubit(),
+          )),
       PageEntity(
         route: AppRoutes.aboutUs,
         page: const AboutUs(),
@@ -111,10 +118,11 @@ class AppPages {
         page: const FAQPage(),
       ),
       PageEntity(
-        route: AppRoutes.chatScreen,
-        page: const ChatScreen(),
-        bloc: BlocProvider(create: (context) => ChatCubit(),)
-      ),
+          route: AppRoutes.chatScreen,
+          page: const ChatScreen(),
+          bloc: BlocProvider(
+            create: (context) => ChatCubit(),
+          )),
     ];
   }
 
@@ -131,22 +139,43 @@ class AppPages {
   static MaterialPageRoute generateRouteSettings(RouteSettings settings) {
     if (settings.name != null) {
       var result = routes().where((element) => element.route == settings.name);
+      bool? language = Global.storageService.getLanguage();
+      //True means is Urdu else english
+
       if (result.isNotEmpty) {
         String? jsonAuthModel =
             Global.storageService.getAuthenticationModelString();
         if (jsonAuthModel != null && result.first.route == AppRoutes.login) {
           return MaterialPageRoute(
               builder: (context) {
-                context.read<GetProductCubit>().getProducts(jsonDecode(jsonAuthModel)?["uid"]);
-                  context.read<LoginCubit>().setUserData(jsonDecode(jsonAuthModel));
-                    return const DashboardScreen();
-                 
+                if (language != null) {
+                  context.read<ProfileCubit>().onChangeLanguage(language);
+                } else {
+                  context.read<ProfileCubit>().onChangeLanguage(false);
+                  Global.storageService.setLanguage(false);
+                }
+                context
+                    .read<GetProductCubit>()
+                    .getProducts(jsonDecode(jsonAuthModel)?["uid"]);
+                context
+                    .read<LoginCubit>()
+                    .setUserData(jsonDecode(jsonAuthModel));
+                return const DashboardScreen();
               },
               settings: settings);
         }
 
         return MaterialPageRoute(
-            builder: (context) => result.first.page, settings: settings);
+            builder: (context) {
+              if (language != null) {
+                context.read<ProfileCubit>().onChangeLanguage(language);
+              } else {
+                context.read<ProfileCubit>().onChangeLanguage(false);
+                Global.storageService.setLanguage(false);
+              }
+              return result.first.page;
+            },
+            settings: settings);
       }
     }
     return MaterialPageRoute(
