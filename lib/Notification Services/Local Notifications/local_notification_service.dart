@@ -13,13 +13,7 @@ class LocalNotificationService {
   static void initialize(BuildContext context) {
     InitializationSettings initializationSettings = InitializationSettings(
         android: const AndroidInitializationSettings("@mipmap/ic_launcher"),
-        iOS: DarwinInitializationSettings(
-          onDidReceiveLocalNotification: (id, title, body, payload) {
-            if (payload != null) {
-              handleOnTapNotificationEvent(context, payload);
-            }
-          },
-        ));
+        iOS: DarwinInitializationSettings());
     _notificationsPlugin.initialize(initializationSettings,
         onDidReceiveNotificationResponse: (details) {
       if (details.payload != null) {

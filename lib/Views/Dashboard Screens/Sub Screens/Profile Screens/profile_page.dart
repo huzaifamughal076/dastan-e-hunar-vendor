@@ -67,7 +67,7 @@ class ProfilePage extends StatelessWidget {
                   ),
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(8),
-                    child: (state.userData?['profileUrl'].isNotEmpty??false)
+                    child: ((state.userData?['profileUrl'] as String?)?.isNotEmpty??false)
                     ?Image.network(
                       '${state.userData?['profileUrl']}',fit: BoxFit.fill,scale: 0.5,cacheWidth: 150, cacheHeight: 150,
                       errorBuilder: (context, error, stackTrace) {

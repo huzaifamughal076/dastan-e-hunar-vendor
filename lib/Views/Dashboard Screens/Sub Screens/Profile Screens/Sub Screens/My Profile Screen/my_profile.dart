@@ -83,11 +83,10 @@ class MyProfileScreen extends StatelessWidget {
                                             scale: 0.5,
                                             cacheWidth: 150,
                                             cacheHeight: 150)
-                                        : (context
+                                        : ((context
                                                     .read<LoginCubit>()
                                                     .state
-                                                    .userData?['profileUrl']
-                                                    .isNotEmpty ??
+                                                    .userData?['profileUrl'] as String?)?.isNotEmpty ??
                                                 false)
                                             ? Image.network(
                                                 '${context.read<LoginCubit>().state.userData?['profileUrl']}',

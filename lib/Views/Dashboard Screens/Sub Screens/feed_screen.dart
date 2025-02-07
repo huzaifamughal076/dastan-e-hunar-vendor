@@ -28,12 +28,22 @@ class FeedScreen extends StatelessWidget {
                   ),
                 ),
                 query: FirebaseFirestore.instance.collection('feeds').orderBy('feedPlacedOn', descending: true),
-                itemBuilder: (context, documentSnapshot, index) {
-                  final data = documentSnapshot.data() as Map<String, dynamic>?;
-                  if (data == null) return Container();
-            
-                  // FeedModel? feedModel = feedController.feedList?[index];
-                  FeedModel? feedModel = FeedModel.fromMap(data);
+                itemBuilder: (context, documentList, index) {
+                        // Ensure documentList is of type List<DocumentSnapshot>
+      if (index >= documentList.length) {
+        return Container();
+      }
+
+      // Extract the document at the current index
+      final documentSnapshot = documentList[index];
+
+      // Retrieve the data from the document
+      final data = documentSnapshot.data() as Map<String, dynamic>?;
+
+      if (data == null) return Container();
+
+      // Create the FeedModel
+      FeedModel? feedModel = FeedModel.fromMap(data);
                   if (feedModel.feedType == "post") {
                     return feedPostCard(feedModel);
                   }
