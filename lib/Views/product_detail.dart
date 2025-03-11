@@ -1,4 +1,5 @@
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 
 import '../Utils/utils.dart';
 
@@ -160,7 +161,29 @@ class ProductDetailPage extends StatelessWidget {
   }
 
     Color _getColorFromString(String colorString) {
-    int value = int.parse(colorString.replaceAll('Color(0x', '').replaceAll(')', ''), radix: 16);
-    return Color(value);
+      print("Colors found::: ${colorString.toString()}");
+    return parseColorFromString(colorString);
+  } 
+}
+
+
+  Color parseColorFromString(String colorString) {
+  final regex = RegExp(r'alpha: ([\d.]+), red: ([\d.]+), green: ([\d.]+), blue: ([\d.]+)');
+  final match = regex.firstMatch(colorString);
+
+  if (match != null) {
+    double alpha = double.parse(match.group(1)!);
+    double red = double.parse(match.group(2)!);
+    double green = double.parse(match.group(3)!);
+    double blue = double.parse(match.group(4)!);
+
+    return Color.fromRGBO(
+      (red * 255).toInt(),
+      (green * 255).toInt(),
+      (blue * 255).toInt(),
+      alpha
+    );
   }
+
+  throw FormatException("Invalid color string format: $colorString");
 }

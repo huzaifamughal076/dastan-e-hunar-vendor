@@ -30,20 +30,21 @@ class _EditProductPageState extends State<EditProductPage> {
 productName = TextEditingController(text: widget.finalMap?['productName']);
 productDescription = TextEditingController(text: widget.finalMap?['productDescription']);
 productPrice = TextEditingController(text: widget.finalMap?['productPrice']);
-List<dynamic>? colorStrings = widget.finalMap?['productColors'].toList();
+print("${widget.finalMap?['productColors'].toString()}");
+List<Color>? colorStrings = (widget.finalMap?['productColors'] as List<dynamic>?)?.map((e){
+  return parseColorFromString(e);
 
-if (colorStrings != null) {
-  productColorList = colorStrings.map(( colorString) {
-    final startIndex = colorString.indexOf('Color(0x') + 'Color(0x'.length;
-    final endIndex = colorString.indexOf(')', startIndex);
-    final colorValue = colorString.substring(startIndex, endIndex);
+}).toList()??[];
 
-    // return Color(int.parse(colorValue, radix: 16));
-    return Color(int.parse(colorValue, radix: 16));
-  }).toList();
-} else {
-  // Handle the case where productColors is null or not a List<String>
-}
+productColorList = colorStrings.toList();
+// productColorList = colorStrings.map(( colorString) {
+//   final startIndex = colorString.indexOf('Color(0x') + 'Color(0x'.length;
+//   final endIndex = colorString.indexOf(')', startIndex);
+//   final colorValue = colorString.substring(startIndex, endIndex);
+
+//   // return Color(int.parse(colorValue, radix: 16));
+//   return Color(int.parse(colorValue, radix: 16));
+// }).toList();
 
 
   }
@@ -163,7 +164,7 @@ if (colorStrings != null) {
                     width: MediaQuery.of(context).size.width*0.9,
                     menuHeight: 300,
                     menuStyle: MenuStyle(
-                      shape:MaterialStatePropertyAll(RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)))
+                      shape:WidgetStatePropertyAll(RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)))
                     ),
                         inputDecorationTheme: InputDecorationTheme(
                           fillColor: kWhite,
